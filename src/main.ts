@@ -143,10 +143,11 @@ const releaseOptions = () => {
 }
 
 async function run() {
+  let options = SLACK_WEBHOOK_URL ? releaseOptions() : reviewOptions()
   axios
     .post(
       SLACK_WEBHOOK_URL ?? SLACK_REVIEW_WEBHOOK_URL,
-      JSON.stringify(SLACK_WEBHOOK_URL ? releaseOptions() : reviewOptions())
+      JSON.stringify(options)
     )
     .then((res: any) => {
       core.info(JSON.stringify(res?.data))

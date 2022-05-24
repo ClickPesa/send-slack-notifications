@@ -5,6 +5,45 @@ inputs:
   GITHUB_TOKEN:
     required: true
     description: "authorization token to perform actions"
+  APP_NAME:
+    required: true
+    description: "app name"
+  SLACK_REVIEW_WEBHOOK_URL:
+    required: false
+    description: "slack url to send review notifications"
+  SLACK_WEBHOOK_URL:
+    required: false
+    description: "slack webhook to send normal and release notifications"
+  SLACK_AUTH_TOKEN:
+    required: false
+    description: "authentication token to fetch slack reporter username"
+  SLACK_API_URL:
+    required: false
+    description: "slack api url to fetch usernames"
+  APP_LINK:
+    required: true
+    description: "live repository url"
+  REPORTER_SLACK_EMAIL:
+    required: false
+    description: "reporter slack email address"
+  REPORTER_SLACK_ID:
+    required: false
+    description: "reporter slack id"
+  TEAM_LEADER_SLACK_ID:
+    required: false
+    description: 'team leader slack Id'
+  TECH_LEAD_SLACK_ID:
+    required: false
+    description: "tech lead slack id"
+  PR_LINK:
+    required: false
+    description: "pull request link for manual review"
+  PR_TITLE:
+    required: false
+    description: "pull request title"
+  NEW_VERSION:
+    required: false
+    description: "new app version for release notification"
 runs:
   using: 'node16'
   main: 'dist/index.js'

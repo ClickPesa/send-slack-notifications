@@ -21,5 +21,16 @@ jobs:
         id: pull_request_author
         with:
           GITHUB_TOKEN: ${{secrets.TOKEN}}
-      - name: Get the username
-        run: echo "The author was ${{ steps.pull_request_author.outputs.author }}"
+          # SLACK_WEBHOOK_URL: ${{secrets.SLACK_WEBHOOK_URL}}
+          SLACK_REVIEW_WEBHOOK_URL: ${{secrets.SLACK_REVIEW_WEBHOOK_URL}}
+          TEAM_LEADER_SLACK_ID: ${{secrets.TEAM_LEADER_SLACK_ID}}
+          REPORTER_SLACK_ID: ""
+          REPORTER_SLACK_EMAIL: ""
+          TECH_LEAD_SLACK_ID: ${{secrets.TECH_LEAD_SLACK_ID}}
+          APP_NAME: send-slack-notification-actions
+          APP_LINK: "https://github.com/ClickPesa/send-slack-notifications"
+          PR_LINK: "https://github.com/ClickPesa/send-slack-notifications/pulls/1"
+          PR_TITLE: "master"
+          NEW_VERSION: "1.0.1"
+          SLACK_AUTH_TOKEN: ${{secrets.SLACK_AUTH_TOKEN}}
+          SLACK_API_URL: ${{secrets.SLACK_API_URL}}

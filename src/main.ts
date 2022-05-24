@@ -35,7 +35,7 @@ if (!REPORTER_SLACK_ID && REPORTER_SLACK_EMAIL) {
 }
 
 const reviewOptions = () => {
-  {
+  return {
     blocks: [
       {
         type: 'header',
@@ -143,11 +143,10 @@ const releaseOptions = () => {
 }
 
 async function run() {
-  core.info(SLACK_WEBHOOK_URL)
   axios
     .post(
       SLACK_WEBHOOK_URL ?? SLACK_REVIEW_WEBHOOK_URL,
-      JSON.stringify(SLACK_WEBHOOK_URL ? releaseOptions : reviewOptions)
+      JSON.stringify(SLACK_WEBHOOK_URL ? releaseOptions() : reviewOptions())
     )
     .then((res: any) => {
       core.info(JSON.stringify(res?.data))

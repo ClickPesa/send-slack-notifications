@@ -36,111 +36,110 @@ if (!REPORTER_SLACK_ID && REPORTER_SLACK_EMAIL) {
 }
 
 async function run() {
-  const reviewOptions = {
-    blocks: [
-      {
-        type: 'header',
-        text: {
-          type: 'plain_text',
-          text: `:sparkles:  New pull request for manual review on ${APP_NAME}`,
-          emoji: true
-        }
-      },
-      {
-        type: 'context',
-        elements: [
+  const options = SLACK_WEBHOOK_URL
+    ? {
+        blocks: [
           {
-            text: ` <@${reporter_id}> <@${TEAM_LEADER_SLACK_ID}> <@${TECH_LEAD_SLACK_ID}>  |  *${APP_NAME}*  |  
-            *${dateString + ' ' + timeString}* 
-            `,
-            type: 'mrkdwn'
-          }
-        ]
-      },
-      {
-        type: 'divider'
-      },
-      {
-        type: 'section',
-        text: {
-          type: 'mrkdwn',
-          text: `*<${PR_LINK} | ${PR_TITLE}>*`
-        }
-      },
-      {
-        type: 'section',
-        text: {
-          type: 'mrkdwn',
-          text: `${BODY ?? '> No commits to display'}`
-        }
-      },
-      {
-        type: 'actions',
-        elements: [
-          {
-            type: 'button',
+            type: 'header',
             text: {
               type: 'plain_text',
-              emoji: true,
-              text: 'Review Changes'
-            },
-            style: 'primary',
-            url: `${APP_LINK}`
+              text: `🚀 New version released on *${APP_NAME}*`,
+              emoji: true
+            }
           },
           {
-            type: 'button',
+            type: 'context',
+            elements: [
+              {
+                text: ` *${APP_NAME}*  |  *${dateString + ' ' + timeString}* `,
+                type: 'mrkdwn'
+              }
+            ]
+          },
+          {
+            type: 'divider'
+          },
+          {
+            type: 'section',
+            text: {
+              type: 'mrkdwn',
+              text: `*<${APP_LINK} | ${NEW_VERSION} >*`
+            }
+          },
+          {
+            type: 'section',
+            text: {
+              type: 'mrkdwn',
+              text: `${BODY ?? '> No commits to display'}`
+            }
+          }
+        ]
+      }
+    : {
+        blocks: [
+          {
+            type: 'header',
             text: {
               type: 'plain_text',
-              emoji: true,
-              text: 'View Pull Request'
-            },
-            url: `${PR_LINK}`
-          }
-        ]
-      }
-    ]
-  }
-
-  const releaseOptions = {
-    blocks: [
-      {
-        type: 'header',
-        text: {
-          type: 'plain_text',
-          text: `🚀 New version released on *${APP_NAME}*`,
-          emoji: true
-        }
-      },
-      {
-        type: 'context',
-        elements: [
+              text: `:sparkles:  New pull request for manual review on ${APP_NAME}`,
+              emoji: true
+            }
+          },
           {
-            text: ` *${APP_NAME}*  |  *${dateString + ' ' + timeString}* `,
-            type: 'mrkdwn'
+            type: 'context',
+            elements: [
+              {
+                text: ` <@${reporter_id}> <@${TEAM_LEADER_SLACK_ID}> <@${TECH_LEAD_SLACK_ID}>  |  *${APP_NAME}*  |  
+            *${dateString + ' ' + timeString}* 
+            `,
+                type: 'mrkdwn'
+              }
+            ]
+          },
+          {
+            type: 'divider'
+          },
+          {
+            type: 'section',
+            text: {
+              type: 'mrkdwn',
+              text: `*<${PR_LINK} | ${PR_TITLE}>*`
+            }
+          },
+          {
+            type: 'section',
+            text: {
+              type: 'mrkdwn',
+              text: `${BODY ?? '> No commits to display'}`
+            }
+          },
+          {
+            type: 'actions',
+            elements: [
+              {
+                type: 'button',
+                text: {
+                  type: 'plain_text',
+                  emoji: true,
+                  text: 'Review Changes'
+                },
+                style: 'primary',
+                url: `${APP_LINK}`
+              },
+              {
+                type: 'button',
+                text: {
+                  type: 'plain_text',
+                  emoji: true,
+                  text: 'View Pull Request'
+                },
+                url: `${PR_LINK}`
+              }
+            ]
           }
         ]
-      },
-      {
-        type: 'divider'
-      },
-      {
-        type: 'section',
-        text: {
-          type: 'mrkdwn',
-          text: `*<${APP_LINK} | ${NEW_VERSION} >*`
-        }
-      },
-      {
-        type: 'section',
-        text: {
-          type: 'mrkdwn',
-          text: `${BODY ?? '> No commits to display'}`
-        }
       }
-    ]
-  }
 
-  let options = SLACK_WEBHOOK_URL ? reviewOptions : releaseOptions
   axios
     .post(SLACK_WEBHOOK_URL ?? SLACK_REVIEW_WEBHOOK_URL, {
       options: JSON.stringify(options)

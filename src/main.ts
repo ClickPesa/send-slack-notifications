@@ -12,6 +12,7 @@ const REPORTER_SLACK_ID: any = core.getInput('REPORTER_SLACK_ID')
 const TEAM_LEADER_SLACK_ID: any = core.getInput('TEAM_LEADER_SLACK_ID')
 const TECH_LEAD_SLACK_ID: any = core.getInput('TECH_LEAD_SLACK_ID')
 const PR_LINK: any = core.getInput('PR_LINK')
+const BODY: any = core.getInput('BODY')
 const PR_TITLE: any = core.getInput('PR_TITLE')
 const NEW_VERSION: any = core.getInput('NEW_VERSION')
 const SLACK_AUTH_TOKEN: any = core.getInput('SLACK_AUTH_TOKEN')
@@ -69,7 +70,7 @@ const reviewOptions = {
       type: 'section',
       text: {
         type: 'mrkdwn',
-        text: ''
+        text: `${BODY ?? 'No commits to display'}`
       }
     },
     {
@@ -132,17 +133,18 @@ const releaseOptions = {
       type: 'section',
       text: {
         type: 'mrkdwn',
-        text: ''
+        text: `${BODY ?? 'No commits to display'}`
       }
     }
   ]
 }
 
 async function run() {
-  let options = reviewOptions
-  core.info(JSON.stringify(options))
+  let options = SLACK_WEBHOOK_URL ? reviewOptions : releaseOptions
   axios
-    .post(SLACK_REVIEW_WEBHOOK_URL, {options: JSON.stringify(options)})
+    .post(SLACK_WEBHOOK_URL ?? SLACK_REVIEW_WEBHOOK_URL, {
+      options: JSON.stringify(options)
+    })
     .then((res: any) => {
       core.info(JSON.stringify(res?.data))
     })

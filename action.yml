@@ -8,6 +8,9 @@ inputs:
   APP_NAME:
     required: true
     description: "app name"
+  BODY:
+    required: true
+    description: "notification message/body"
   SLACK_REVIEW_WEBHOOK_URL:
     required: false
     description: "slack url to send review notifications"

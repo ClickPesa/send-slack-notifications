@@ -180,10 +180,11 @@ const releaseOptions = () => {
 };
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
+        core.info(SLACK_WEBHOOK_URL);
         axios_1.default
             .post(SLACK_WEBHOOK_URL !== null && SLACK_WEBHOOK_URL !== void 0 ? SLACK_WEBHOOK_URL : SLACK_REVIEW_WEBHOOK_URL, JSON.stringify(SLACK_WEBHOOK_URL ? releaseOptions : reviewOptions))
             .then((res) => {
-            core.info(JSON.stringify(res.data));
+            core.info(JSON.stringify(res === null || res === void 0 ? void 0 : res.data));
         })
             .catch((error) => {
             core.setFailed('error here' + (error === null || error === void 0 ? void 0 : error.message));

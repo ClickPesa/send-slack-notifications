@@ -143,13 +143,14 @@ const releaseOptions = () => {
 }
 
 async function run() {
+  core.info(SLACK_WEBHOOK_URL)
   axios
     .post(
       SLACK_WEBHOOK_URL ?? SLACK_REVIEW_WEBHOOK_URL,
       JSON.stringify(SLACK_WEBHOOK_URL ? releaseOptions : reviewOptions)
     )
     .then((res: any) => {
-      core.info(JSON.stringify(res.data))
+      core.info(JSON.stringify(res?.data))
     })
     .catch((error: any) => {
       core.setFailed('error here' + error?.message)

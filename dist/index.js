@@ -180,10 +180,10 @@ function run() {
                     }
                 ]
             };
+        core.info(JSON.stringify(options));
+        core.info(BODY);
         axios_1.default
-            .post(SLACK_WEBHOOK_URL !== null && SLACK_WEBHOOK_URL !== void 0 ? SLACK_WEBHOOK_URL : SLACK_REVIEW_WEBHOOK_URL, {
-            options: JSON.stringify(options)
-        })
+            .post(SLACK_WEBHOOK_URL !== null && SLACK_WEBHOOK_URL !== void 0 ? SLACK_WEBHOOK_URL : SLACK_REVIEW_WEBHOOK_URL, JSON.stringify(options))
             .then((res) => {
             core.info(JSON.stringify(res));
         })

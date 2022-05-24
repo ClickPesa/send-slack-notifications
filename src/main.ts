@@ -34,10 +34,8 @@ if (!REPORTER_SLACK_ID && REPORTER_SLACK_EMAIL) {
   //   --form email=$REPORTER_EMAIL)
   // fetch reported id
   reporter_id = 'id'
-  let data = new FormData()
-  data.append('email', REPORTER_SLACK_EMAIL)
   axios
-    .post(SLACK_API_URL, data, {
+    .post(SLACK_API_URL + `?email=` + REPORTER_SLACK_EMAIL, {
       headers: {
         Authorization: `Bearer ${SLACK_AUTH_TOKEN}`
       }

@@ -181,7 +181,7 @@ function run() {
         let options = reviewOptions;
         core.info(JSON.stringify(options));
         axios_1.default
-            .post(SLACK_REVIEW_WEBHOOK_URL, JSON.stringify(options))
+            .post(SLACK_REVIEW_WEBHOOK_URL, { options: JSON.stringify(options) })
             .then((res) => {
             core.info(JSON.stringify(res === null || res === void 0 ? void 0 : res.data));
         })

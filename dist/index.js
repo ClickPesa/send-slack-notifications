@@ -77,7 +77,8 @@ if (!REPORTER_SLACK_ID && REPORTER_SLACK_EMAIL) {
     axios_1.default
         .post(SLACK_API_URL + `?email=` + REPORTER_SLACK_EMAIL, {
         headers: {
-            Authorization: `Bearer ${SLACK_AUTH_TOKEN}`
+            Authorization: `Bearer ${SLACK_AUTH_TOKEN}`,
+            ContentType: 'application/x-www-form-urlencoded'
         }
     })
         .then((res) => {

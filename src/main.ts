@@ -70,7 +70,7 @@ const reviewOptions = {
       type: 'section',
       text: {
         type: 'mrkdwn',
-        text: `${BODY ?? 'No commits to display'}`
+        text: `${BODY ?? '> No commits to display'}`
       }
     },
     {
@@ -133,7 +133,7 @@ const releaseOptions = {
       type: 'section',
       text: {
         type: 'mrkdwn',
-        text: `${BODY ?? 'No commits to display'}`
+        text: `${BODY ?? '> No commits to display'}`
       }
     }
   ]
@@ -146,7 +146,7 @@ async function run() {
       options: JSON.stringify(options)
     })
     .then((res: any) => {
-      core.info(JSON.stringify(res?.data))
+      core.info(JSON.stringify(res))
     })
     .catch((error: any) => {
       core.setFailed(error?.message)

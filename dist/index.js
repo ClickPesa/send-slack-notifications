@@ -110,7 +110,7 @@ const reviewOptions = {
             type: 'section',
             text: {
                 type: 'mrkdwn',
-                text: `${BODY !== null && BODY !== void 0 ? BODY : 'No commits to display'}`
+                text: `${BODY !== null && BODY !== void 0 ? BODY : '> No commits to display'}`
             }
         },
         {
@@ -172,7 +172,7 @@ const releaseOptions = {
             type: 'section',
             text: {
                 type: 'mrkdwn',
-                text: `${BODY !== null && BODY !== void 0 ? BODY : 'No commits to display'}`
+                text: `${BODY !== null && BODY !== void 0 ? BODY : '> No commits to display'}`
             }
         }
     ]
@@ -185,7 +185,7 @@ function run() {
             options: JSON.stringify(options)
         })
             .then((res) => {
-            core.info(JSON.stringify(res === null || res === void 0 ? void 0 : res.data));
+            core.info(JSON.stringify(res));
         })
             .catch((error) => {
             core.setFailed(error === null || error === void 0 ? void 0 : error.message);

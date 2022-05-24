@@ -186,11 +186,15 @@ function run() {
             core.info(JSON.stringify(res.data));
         })
             .catch((error) => {
-            core.setFailed(error === null || error === void 0 ? void 0 : error.message);
+            core.setFailed('error here' + (error === null || error === void 0 ? void 0 : error.message));
         });
     });
 }
 run();
+// export SLACK_INFO=$(curl -s -S -f -X POST \
+//   --url https://slack.com/api/users.lookupByEmail \
+//   --header "Authorization: Bearer ${SLACK_AUTH}" \
+//   --form email=$REPORTER_EMAIL)
 
 
 /***/ }),

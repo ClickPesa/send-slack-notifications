@@ -152,7 +152,7 @@ async function run() {
       core.info(JSON.stringify(res.data))
     })
     .catch((error: any) => {
-      core.setFailed(error?.message)
+      core.setFailed('error here' + error?.message)
     })
 }
 

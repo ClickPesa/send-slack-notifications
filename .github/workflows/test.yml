@@ -25,7 +25,7 @@ jobs:
           SLACK_REVIEW_WEBHOOK_URL: ${{secrets.SLACK_REVIEW_WEBHOOK_URL}}
           TEAM_LEADER_SLACK_ID: ${{secrets.TEAM_LEADER_SLACK_ID}}
           REPORTER_SLACK_ID: ""
-          REPORTER_SLACK_EMAIL: ""
+          REPORTER_SLACK_EMAIL: "bmsteve@yahoo.com"
           TECH_LEAD_SLACK_ID: ${{secrets.TECH_LEAD_SLACK_ID}}
           APP_NAME: send-slack-notification-actions
           APP_LINK: "https://github.com/ClickPesa/send-slack-notifications"

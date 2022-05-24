@@ -1,0 +1,10 @@
+name: 'Send slack notifications'
+description: ''
+author: 'Benedict'
+inputs:
+  GITHUB_TOKEN:
+    required: true
+    description: "authorization token to perform actions"
+runs:
+  using: 'node16'
+  main: 'dist/index.js'

@@ -74,120 +74,116 @@ if (!REPORTER_SLACK_ID && REPORTER_SLACK_EMAIL) {
 else {
     reporter_id = REPORTER_SLACK_ID;
 }
-const reviewOptions = () => {
-    return {
-        blocks: [
-            {
-                type: 'header',
-                text: {
-                    type: 'plain_text',
-                    text: ':sparkles:  New pull request for manual review on $APPNAME',
-                    emoji: true
+const reviewOptions = {
+    blocks: [
+        {
+            type: 'header',
+            text: {
+                type: 'plain_text',
+                text: ':sparkles:  New pull request for manual review on $APPNAME',
+                emoji: true
+            }
+        },
+        {
+            type: 'context',
+            elements: [
+                {
+                    text: ` <@${reporter_id}> <@${TEAM_LEADER_SLACK_ID}> <@${TECH_LEAD_SLACK_ID}>  |  *${APP_NAME}*  |  *${dateString + ' ' + timeString}* `,
+                    type: 'mrkdwn'
                 }
-            },
-            {
-                type: 'context',
-                elements: [
-                    {
-                        text: ` <@${reporter_id}> <@${TEAM_LEADER_SLACK_ID}> <@${TECH_LEAD_SLACK_ID}>  |  *${APP_NAME}*  |  *${dateString + ' ' + timeString}* `,
-                        type: 'mrkdwn'
-                    }
-                ]
-            },
-            {
-                type: 'divider'
-            },
-            {
-                type: 'section',
-                text: {
-                    type: 'mrkdwn',
-                    text: `*<${PR_LINK} | ${PR_TITLE}>*`
-                }
-            },
-            {
-                type: 'section',
-                text: {
-                    type: 'mrkdwn',
-                    text: ''
-                }
-            },
-            {
-                type: 'actions',
-                elements: [
-                    {
-                        type: 'button',
-                        text: {
-                            type: 'plain_text',
-                            emoji: true,
-                            text: 'Review Changes'
-                        },
-                        style: 'primary',
-                        url: `${APP_LINK}`
+            ]
+        },
+        {
+            type: 'divider'
+        },
+        {
+            type: 'section',
+            text: {
+                type: 'mrkdwn',
+                text: `*<${PR_LINK} | ${PR_TITLE}>*`
+            }
+        },
+        {
+            type: 'section',
+            text: {
+                type: 'mrkdwn',
+                text: ''
+            }
+        },
+        {
+            type: 'actions',
+            elements: [
+                {
+                    type: 'button',
+                    text: {
+                        type: 'plain_text',
+                        emoji: true,
+                        text: 'Review Changes'
                     },
-                    {
-                        type: 'button',
-                        text: {
-                            type: 'plain_text',
-                            emoji: true,
-                            text: 'View Pull Request'
-                        },
-                        url: `${PR_LINK}`
-                    }
-                ]
-            }
-        ]
-    };
+                    style: 'primary',
+                    url: `${APP_LINK}`
+                },
+                {
+                    type: 'button',
+                    text: {
+                        type: 'plain_text',
+                        emoji: true,
+                        text: 'View Pull Request'
+                    },
+                    url: `${PR_LINK}`
+                }
+            ]
+        }
+    ]
 };
-const releaseOptions = () => {
-    return {
-        blocks: [
-            {
-                type: 'header',
-                text: {
-                    type: 'plain_text',
-                    text: `🚀 New version released on *${APP_NAME}*`,
-                    emoji: true
-                }
-            },
-            {
-                type: 'context',
-                elements: [
-                    {
-                        text: ` *${APP_NAME}*  |  *${dateString + ' ' + timeString}* `,
-                        type: 'mrkdwn'
-                    }
-                ]
-            },
-            {
-                type: 'divider'
-            },
-            {
-                type: 'section',
-                text: {
-                    type: 'mrkdwn',
-                    text: `*<${APP_LINK} | ${NEW_VERSION} >*`
-                }
-            },
-            {
-                type: 'section',
-                text: {
-                    type: 'mrkdwn',
-                    text: ''
-                }
+const releaseOptions = {
+    blocks: [
+        {
+            type: 'header',
+            text: {
+                type: 'plain_text',
+                text: `🚀 New version released on *${APP_NAME}*`,
+                emoji: true
             }
-        ]
-    };
+        },
+        {
+            type: 'context',
+            elements: [
+                {
+                    text: ` *${APP_NAME}*  |  *${dateString + ' ' + timeString}* `,
+                    type: 'mrkdwn'
+                }
+            ]
+        },
+        {
+            type: 'divider'
+        },
+        {
+            type: 'section',
+            text: {
+                type: 'mrkdwn',
+                text: `*<${APP_LINK} | ${NEW_VERSION} >*`
+            }
+        },
+        {
+            type: 'section',
+            text: {
+                type: 'mrkdwn',
+                text: ''
+            }
+        }
+    ]
 };
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
-        let options = SLACK_WEBHOOK_URL ? releaseOptions() : reviewOptions();
+        let options = SLACK_WEBHOOK_URL ? releaseOptions : reviewOptions;
         axios_1.default
             .post(SLACK_WEBHOOK_URL !== null && SLACK_WEBHOOK_URL !== void 0 ? SLACK_WEBHOOK_URL : SLACK_REVIEW_WEBHOOK_URL, JSON.stringify(options))
             .then((res) => {
             core.info(JSON.stringify(res === null || res === void 0 ? void 0 : res.data));
         })
             .catch((error) => {
-            core.setFailed('error here' + (error === null || error === void 0 ? void 0 : error.message));
+            core.setFailed(error === null || error === void 0 ? void 0 : error.message);
         });
     });
 }

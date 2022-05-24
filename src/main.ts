@@ -34,116 +34,112 @@ if (!REPORTER_SLACK_ID && REPORTER_SLACK_EMAIL) {
   reporter_id = REPORTER_SLACK_ID
 }
 
-const reviewOptions = () => {
-  return {
-    blocks: [
-      {
-        type: 'header',
-        text: {
-          type: 'plain_text',
-          text: ':sparkles:  New pull request for manual review on $APPNAME',
-          emoji: true
-        }
-      },
-      {
-        type: 'context',
-        elements: [
-          {
-            text: ` <@${reporter_id}> <@${TEAM_LEADER_SLACK_ID}> <@${TECH_LEAD_SLACK_ID}>  |  *${APP_NAME}*  |  *${
-              dateString + ' ' + timeString
-            }* `,
-            type: 'mrkdwn'
-          }
-        ]
-      },
-      {
-        type: 'divider'
-      },
-      {
-        type: 'section',
-        text: {
-          type: 'mrkdwn',
-          text: `*<${PR_LINK} | ${PR_TITLE}>*`
-        }
-      },
-      {
-        type: 'section',
-        text: {
-          type: 'mrkdwn',
-          text: ''
-        }
-      },
-      {
-        type: 'actions',
-        elements: [
-          {
-            type: 'button',
-            text: {
-              type: 'plain_text',
-              emoji: true,
-              text: 'Review Changes'
-            },
-            style: 'primary',
-            url: `${APP_LINK}`
-          },
-          {
-            type: 'button',
-            text: {
-              type: 'plain_text',
-              emoji: true,
-              text: 'View Pull Request'
-            },
-            url: `${PR_LINK}`
-          }
-        ]
+const reviewOptions = {
+  blocks: [
+    {
+      type: 'header',
+      text: {
+        type: 'plain_text',
+        text: ':sparkles:  New pull request for manual review on $APPNAME',
+        emoji: true
       }
-    ]
-  }
+    },
+    {
+      type: 'context',
+      elements: [
+        {
+          text: ` <@${reporter_id}> <@${TEAM_LEADER_SLACK_ID}> <@${TECH_LEAD_SLACK_ID}>  |  *${APP_NAME}*  |  *${
+            dateString + ' ' + timeString
+          }* `,
+          type: 'mrkdwn'
+        }
+      ]
+    },
+    {
+      type: 'divider'
+    },
+    {
+      type: 'section',
+      text: {
+        type: 'mrkdwn',
+        text: `*<${PR_LINK} | ${PR_TITLE}>*`
+      }
+    },
+    {
+      type: 'section',
+      text: {
+        type: 'mrkdwn',
+        text: ''
+      }
+    },
+    {
+      type: 'actions',
+      elements: [
+        {
+          type: 'button',
+          text: {
+            type: 'plain_text',
+            emoji: true,
+            text: 'Review Changes'
+          },
+          style: 'primary',
+          url: `${APP_LINK}`
+        },
+        {
+          type: 'button',
+          text: {
+            type: 'plain_text',
+            emoji: true,
+            text: 'View Pull Request'
+          },
+          url: `${PR_LINK}`
+        }
+      ]
+    }
+  ]
 }
 
-const releaseOptions = () => {
-  return {
-    blocks: [
-      {
-        type: 'header',
-        text: {
-          type: 'plain_text',
-          text: `🚀 New version released on *${APP_NAME}*`,
-          emoji: true
-        }
-      },
-      {
-        type: 'context',
-        elements: [
-          {
-            text: ` *${APP_NAME}*  |  *${dateString + ' ' + timeString}* `,
-            type: 'mrkdwn'
-          }
-        ]
-      },
-      {
-        type: 'divider'
-      },
-      {
-        type: 'section',
-        text: {
-          type: 'mrkdwn',
-          text: `*<${APP_LINK} | ${NEW_VERSION} >*`
-        }
-      },
-      {
-        type: 'section',
-        text: {
-          type: 'mrkdwn',
-          text: ''
-        }
+const releaseOptions = {
+  blocks: [
+    {
+      type: 'header',
+      text: {
+        type: 'plain_text',
+        text: `🚀 New version released on *${APP_NAME}*`,
+        emoji: true
       }
-    ]
-  }
+    },
+    {
+      type: 'context',
+      elements: [
+        {
+          text: ` *${APP_NAME}*  |  *${dateString + ' ' + timeString}* `,
+          type: 'mrkdwn'
+        }
+      ]
+    },
+    {
+      type: 'divider'
+    },
+    {
+      type: 'section',
+      text: {
+        type: 'mrkdwn',
+        text: `*<${APP_LINK} | ${NEW_VERSION} >*`
+      }
+    },
+    {
+      type: 'section',
+      text: {
+        type: 'mrkdwn',
+        text: ''
+      }
+    }
+  ]
 }
 
 async function run() {
-  let options = SLACK_WEBHOOK_URL ? releaseOptions() : reviewOptions()
+  let options = SLACK_WEBHOOK_URL ? releaseOptions : reviewOptions
   axios
     .post(
       SLACK_WEBHOOK_URL ?? SLACK_REVIEW_WEBHOOK_URL,
@@ -153,7 +149,7 @@ async function run() {
       core.info(JSON.stringify(res?.data))
     })
     .catch((error: any) => {
-      core.setFailed('error here' + error?.message)
+      core.setFailed(error?.message)
     })
 }
 

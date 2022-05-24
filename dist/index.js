@@ -80,7 +80,7 @@ const reviewOptions = {
             type: 'header',
             text: {
                 type: 'plain_text',
-                text: ':sparkles:  New pull request for manual review on $APPNAME',
+                text: `:sparkles:  New pull request for manual review on ${APP_NAME}`,
                 emoji: true
             }
         },
@@ -88,7 +88,9 @@ const reviewOptions = {
             type: 'context',
             elements: [
                 {
-                    text: ` <@${reporter_id}> <@${TEAM_LEADER_SLACK_ID}> <@${TECH_LEAD_SLACK_ID}>  |  *${APP_NAME}*  |  *${dateString + ' ' + timeString}* `,
+                    text: ` <@${reporter_id}> <@${TEAM_LEADER_SLACK_ID}> <@${TECH_LEAD_SLACK_ID}>  |  *${APP_NAME}*  |  
+          *${dateString + ' ' + timeString}* 
+          `,
                     type: 'mrkdwn'
                 }
             ]
@@ -176,10 +178,10 @@ const releaseOptions = {
 };
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
-        let options = SLACK_WEBHOOK_URL ? releaseOptions : reviewOptions;
+        let options = reviewOptions;
         core.info(JSON.stringify(options));
         axios_1.default
-            .post(SLACK_WEBHOOK_URL !== null && SLACK_WEBHOOK_URL !== void 0 ? SLACK_WEBHOOK_URL : SLACK_REVIEW_WEBHOOK_URL, JSON.stringify(options))
+            .post(SLACK_REVIEW_WEBHOOK_URL, JSON.stringify(options))
             .then((res) => {
             core.info(JSON.stringify(res === null || res === void 0 ? void 0 : res.data));
         })

@@ -41,11 +41,9 @@ async function run() {
         }
       )
       reporter_id = data?.user?.id
-      core.info(reporter_id)
     } else {
       reporter_id = REPORTER_SLACK_ID
     }
-    core.info(reporter_id)
     const options = SLACK_WEBHOOK_URL
       ? {
           blocks: [
@@ -93,7 +91,7 @@ async function run() {
               type: 'header',
               text: {
                 type: 'plain_text',
-                text: `:sparkles:  New pull request for manual review on ${APP_NAME}`,
+                text: ':sparkles:  New pull request for manual review on $APPNAME',
                 emoji: true
               }
             },
@@ -101,9 +99,7 @@ async function run() {
               type: 'context',
               elements: [
                 {
-                  text: ` <@${reporter_id}> <@${TEAM_LEADER_SLACK_ID}> <@${TECH_LEAD_SLACK_ID}>  |  *${APP_NAME}*  |  
-            *${dateString + ' ' + timeString}* 
-            `,
+                  text: ' <@${REPORTER_SLACK_ID}> <@${TEAM_LEADER_SLACK_ID}> <@${TECH_LEADER_SLACK_ID}>  |  *${APPNAME}*  |  *${RELEASE_DATE}* ',
                   type: 'mrkdwn'
                 }
               ]
@@ -115,14 +111,14 @@ async function run() {
               type: 'section',
               text: {
                 type: 'mrkdwn',
-                text: `*<${PR_LINK} | ${PR_TITLE}>*`
+                text: '*<${PR_LINK} | ${TITLE}>*'
               }
             },
             {
               type: 'section',
               text: {
                 type: 'mrkdwn',
-                text: `${BODY ?? '> No commits to display'}`
+                text: '${DESCRIPTION}'
               }
             },
             {
@@ -136,7 +132,7 @@ async function run() {
                     text: 'Review Changes'
                   },
                   style: 'primary',
-                  url: `${APP_LINK}`
+                  url: '${REVIEW_LINK}'
                 },
                 {
                   type: 'button',
@@ -145,12 +141,77 @@ async function run() {
                     emoji: true,
                     text: 'View Pull Request'
                   },
-                  url: `${PR_LINK}`
+                  url: '${PR_LINK}'
                 }
               ]
             }
           ]
         }
+
+    // {
+    //     blocks: [
+    //       {
+    //         type: 'header',
+    //         text: {
+    //           type: 'plain_text',
+    //           text: `:sparkles:  New pull request for manual review on ${APP_NAME}`,
+    //           emoji: true
+    //         }
+    //       },
+    //       {
+    //         type: 'context',
+    //         elements: [
+    //           {
+    //             text: ` <@${reporter_id}> <@${TEAM_LEADER_SLACK_ID}> <@${TECH_LEAD_SLACK_ID}>  |  *${APP_NAME}*  |
+    //       *${dateString + ' ' + timeString}*
+    //       `,
+    //             type: 'mrkdwn'
+    //           }
+    //         ]
+    //       },
+    //       {
+    //         type: 'divider'
+    //       },
+    //       {
+    //         type: 'section',
+    //         text: {
+    //           type: 'mrkdwn',
+    //           text: `*<${PR_LINK} | ${PR_TITLE}>*`
+    //         }
+    //       },
+    //       {
+    //         type: 'section',
+    //         text: {
+    //           type: 'mrkdwn',
+    //           text: `${BODY ?? '> No commits to display'}`
+    //         }
+    //       },
+    //       {
+    //         type: 'actions',
+    //         elements: [
+    //           {
+    //             type: 'button',
+    //             text: {
+    //               type: 'plain_text',
+    //               emoji: true,
+    //               text: 'Review Changes'
+    //             },
+    //             style: 'primary',
+    //             url: `${APP_LINK}`
+    //           },
+    //           {
+    //             type: 'button',
+    //             text: {
+    //               type: 'plain_text',
+    //               emoji: true,
+    //               text: 'View Pull Request'
+    //             },
+    //             url: `${PR_LINK}`
+    //           }
+    //         ]
+    //       }
+    //     ]
+    //   }
 
     core.info(JSON.stringify(options))
 
@@ -158,12 +219,6 @@ async function run() {
       SLACK_WEBHOOK_URL ?? SLACK_REVIEW_WEBHOOK_URL,
       JSON.stringify(options)
     )
-    // .then((res: any) => {
-    //   core.info(JSON.stringify(res))
-    // })
-    // .catch((error: any) => {
-    //   core.setFailed(error?.message)
-    // })
   } catch (err: any) {
     core.warning(err?.message)
   }

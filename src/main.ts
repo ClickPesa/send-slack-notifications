@@ -28,9 +28,28 @@ let timeString = newDate.toLocaleTimeString()
 let reporter_id = ''
 
 if (!REPORTER_SLACK_ID && REPORTER_SLACK_EMAIL) {
+  // export SLACK_INFO=$(curl -s -S -f -X POST \
+  //   --url https://slack.com/api/users.lookupByEmail \
+  //   --header "Authorization: Bearer ${SLACK_AUTH}" \
+  //   --form email=$REPORTER_EMAIL)
   // fetch reported id
   reporter_id = 'id'
-  // const {data} = await axios.get()
+  axios
+    .post(
+      SLACK_API_URL,
+      {email: REPORTER_SLACK_EMAIL},
+      {
+        headers: {
+          Authorization: `Bearer ${SLACK_AUTH_TOKEN}`
+        }
+      }
+    )
+    .then((res: any) => {
+      core.info(JSON.stringify(res?.data))
+    })
+    .catch((err: any) => {
+      core.warning(err?.message)
+    })
 } else {
   reporter_id = REPORTER_SLACK_ID
 }
@@ -140,9 +159,6 @@ async function run() {
         ]
       }
 
-  core.info(JSON.stringify(options))
-  core.info(BODY)
-
   axios
     .post(
       SLACK_WEBHOOK_URL ?? SLACK_REVIEW_WEBHOOK_URL,
@@ -157,8 +173,3 @@ async function run() {
 }
 
 run()
-
-// export SLACK_INFO=$(curl -s -S -f -X POST \
-//   --url https://slack.com/api/users.lookupByEmail \
-//   --header "Authorization: Bearer ${SLACK_AUTH}" \
-//   --form email=$REPORTER_EMAIL)

@@ -68,9 +68,24 @@ let dateString = newDate.toDateString();
 let timeString = newDate.toLocaleTimeString();
 let reporter_id = '';
 if (!REPORTER_SLACK_ID && REPORTER_SLACK_EMAIL) {
+    // export SLACK_INFO=$(curl -s -S -f -X POST \
+    //   --url https://slack.com/api/users.lookupByEmail \
+    //   --header "Authorization: Bearer ${SLACK_AUTH}" \
+    //   --form email=$REPORTER_EMAIL)
     // fetch reported id
     reporter_id = 'id';
-    // const {data} = await axios.get()
+    axios_1.default
+        .post(SLACK_API_URL, { email: REPORTER_SLACK_EMAIL }, {
+        headers: {
+            Authorization: `Bearer ${SLACK_AUTH_TOKEN}`
+        }
+    })
+        .then((res) => {
+        core.info(JSON.stringify(res === null || res === void 0 ? void 0 : res.data));
+    })
+        .catch((err) => {
+        core.warning(err === null || err === void 0 ? void 0 : err.message);
+    });
 }
 else {
     reporter_id = REPORTER_SLACK_ID;
@@ -180,8 +195,6 @@ function run() {
                     }
                 ]
             };
-        core.info(JSON.stringify(options));
-        core.info(BODY);
         axios_1.default
             .post(SLACK_WEBHOOK_URL !== null && SLACK_WEBHOOK_URL !== void 0 ? SLACK_WEBHOOK_URL : SLACK_REVIEW_WEBHOOK_URL, JSON.stringify(options))
             .then((res) => {
@@ -193,10 +206,6 @@ function run() {
     });
 }
 run();
-// export SLACK_INFO=$(curl -s -S -f -X POST \
-//   --url https://slack.com/api/users.lookupByEmail \
-//   --header "Authorization: Bearer ${SLACK_AUTH}" \
-//   --form email=$REPORTER_EMAIL)
 
 
 /***/ }),

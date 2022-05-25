@@ -153,12 +153,9 @@ async function run() {
     core.info(APP_LINK)
     core.info(PR_LINK)
 
-    await axios.post(
-      SLACK_WEBHOOK_URL ?? SLACK_REVIEW_WEBHOOK_URL,
-      JSON.stringify(options)
-    )
+    await axios.post(SLACK_REVIEW_WEBHOOK_URL, JSON.stringify(options))
   } catch (err: any) {
-    core.warning(err?.message)
+    core.setFailed(err?.message)
   }
 }
 

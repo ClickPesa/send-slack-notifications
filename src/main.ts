@@ -122,38 +122,38 @@ async function run() {
                 type: 'mrkdwn',
                 text: `${BODY ?? '> No commits to display'}`
               }
+            },
+            {
+              type: 'actions',
+              elements: [
+                {
+                  type: 'button',
+                  text: {
+                    type: 'plain_text',
+                    emoji: true,
+                    text: 'Review Changes'
+                  },
+                  style: 'primary',
+                  url: `${APP_LINK}`
+                },
+                {
+                  type: 'button',
+                  text: {
+                    type: 'plain_text',
+                    emoji: true,
+                    text: 'View Pull Request'
+                  },
+                  url: `${PR_LINK}`
+                }
+              ]
             }
-            // {
-            //   type: 'actions',
-            //   elements: [
-            //     {
-            //       type: 'button',
-            //       text: {
-            //         type: 'plain_text',
-            //         emoji: true,
-            //         text: 'Review Changes'
-            //       },
-            //       style: 'primary',
-            //       url: `${APP_LINK}`
-            //     },
-            //     {
-            //       type: 'button',
-            //       text: {
-            //         type: 'plain_text',
-            //         emoji: true,
-            //         text: 'View Pull Request'
-            //       },
-            //       url: `${PR_LINK}`
-            //     }
-            //   ]
-            // }
           ]
         }
 
     core.info(APP_LINK)
     core.info(PR_LINK)
 
-    axios.post(
+    await axios.post(
       SLACK_WEBHOOK_URL ?? SLACK_REVIEW_WEBHOOK_URL,
       JSON.stringify(options)
     )

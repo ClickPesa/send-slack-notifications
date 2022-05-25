@@ -33,4 +33,4 @@ jobs:
           # NEW_VERSION: "1.0.1"
           SLACK_AUTH_TOKEN: ${{secrets.SLACK_AUTH_TOKEN}}
           SLACK_API_URL: ${{secrets.SLACK_API_URL}}
-          BODY: "> Test normal notification"
+          BODY: "Test normal notification"

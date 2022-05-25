@@ -18,7 +18,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: ./
-        id: pull_request_author
         with:
           GITHUB_TOKEN: ${{secrets.TOKEN}}
           SLACK_WEBHOOK_URL: ${{secrets.SLACK_WEBHOOK_URL}}

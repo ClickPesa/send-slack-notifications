@@ -84,7 +84,7 @@ function run() {
             else {
                 reporter_id = REPORTER_SLACK_ID;
             }
-            const options = SLACK_WEBHOOK_URL
+            const options = SLACK_WEBHOOK_URL && NEW_VERSION
                 ? {
                     blocks: [
                         {
@@ -123,70 +123,82 @@ function run() {
                         }
                     ]
                 }
-                : {
-                    blocks: [
-                        {
-                            type: 'header',
-                            text: {
-                                type: 'plain_text',
-                                text: `:sparkles:  New pull request for manual review on ${APP_NAME}`,
-                                emoji: true
+                : SLACK_WEBHOOK_URL
+                    ? {
+                        blocks: [
+                            {
+                                type: 'section',
+                                text: {
+                                    type: 'mrkdwn',
+                                    text: `${BODY}`
+                                }
                             }
-                        },
-                        {
-                            type: 'context',
-                            elements: [
-                                {
-                                    text: ` <@${reporter_id}> <@${TEAM_LEADER_SLACK_ID}> <@${TECH_LEAD_SLACK_ID}>  |  *${APP_NAME}*  |  
+                        ]
+                    }
+                    : {
+                        blocks: [
+                            {
+                                type: 'header',
+                                text: {
+                                    type: 'plain_text',
+                                    text: `:sparkles:  New pull request for manual review on ${APP_NAME}`,
+                                    emoji: true
+                                }
+                            },
+                            {
+                                type: 'context',
+                                elements: [
+                                    {
+                                        text: ` <@${reporter_id}> <@${TEAM_LEADER_SLACK_ID}> <@${TECH_LEAD_SLACK_ID}>  |  *${APP_NAME}*  |  
             *${dateString + ' ' + timeString}* 
             `,
-                                    type: 'mrkdwn'
+                                        type: 'mrkdwn'
+                                    }
+                                ]
+                            },
+                            {
+                                type: 'divider'
+                            },
+                            {
+                                type: 'section',
+                                text: {
+                                    type: 'mrkdwn',
+                                    text: `*<${PR_LINK} | ${PR_TITLE}>*`
                                 }
-                            ]
-                        },
-                        {
-                            type: 'divider'
-                        },
-                        {
-                            type: 'section',
-                            text: {
-                                type: 'mrkdwn',
-                                text: `*<${PR_LINK} | ${PR_TITLE}>*`
-                            }
-                        },
-                        {
-                            type: 'section',
-                            text: {
-                                type: 'mrkdwn',
-                                text: `${BODY !== null && BODY !== void 0 ? BODY : '> No commits to display'}`
-                            }
-                        },
-                        {
-                            type: 'actions',
-                            elements: [
-                                {
-                                    type: 'button',
-                                    text: {
-                                        type: 'plain_text',
-                                        emoji: true,
-                                        text: 'Review Changes'
-                                    },
-                                    style: 'primary',
-                                    url: `${APP_LINK}`
-                                },
-                                {
-                                    type: 'button',
-                                    text: {
-                                        type: 'plain_text',
-                                        emoji: true,
-                                        text: 'View Pull Request'
-                                    },
-                                    url: `${PR_LINK}`
+                            },
+                            {
+                                type: 'section',
+                                text: {
+                                    type: 'mrkdwn',
+                                    text: `${BODY !== null && BODY !== void 0 ? BODY : '> No commits to display'}`
                                 }
-                            ]
-                        }
-                    ]
-                };
+                            },
+                            {
+                                type: 'actions',
+                                elements: [
+                                    {
+                                        type: 'button',
+                                        text: {
+                                            type: 'plain_text',
+                                            emoji: true,
+                                            text: 'Review Changes'
+                                        },
+                                        style: 'primary',
+                                        url: `${APP_LINK}`
+                                    },
+                                    {
+                                        type: 'button',
+                                        text: {
+                                            type: 'plain_text',
+                                            emoji: true,
+                                            text: 'View Pull Request'
+                                        },
+                                        url: `${PR_LINK}`
+                                    }
+                                ]
+                            }
+                        ]
+                    };
             if (SLACK_WEBHOOK_URL) {
                 yield axios_1.default.post(SLACK_WEBHOOK_URL, JSON.stringify(options));
             }

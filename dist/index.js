@@ -187,9 +187,12 @@ function run() {
                         }
                     ]
                 };
-            core.info(APP_LINK);
-            core.info(PR_LINK);
-            yield axios_1.default.post(SLACK_REVIEW_WEBHOOK_URL, JSON.stringify(options));
+            if (SLACK_WEBHOOK_URL) {
+                yield axios_1.default.post(SLACK_WEBHOOK_URL, JSON.stringify(options));
+            }
+            else {
+                yield axios_1.default.post(SLACK_REVIEW_WEBHOOK_URL, JSON.stringify(options));
+            }
         }
         catch (err) {
             core.setFailed(err === null || err === void 0 ? void 0 : err.message);
